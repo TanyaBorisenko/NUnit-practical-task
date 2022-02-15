@@ -14,7 +14,7 @@ namespace TestProject1
         public void BeforeTests()
         {
             _driver = new ChromeDriver();
-            // _driver = new ChromeDriver(@"C:\Users\Саша\RiderProjects\TestProject1\TestProject1\Resources\");
+            
         }
 
         [Test]
