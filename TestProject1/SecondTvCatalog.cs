@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V85.Browser;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 
 namespace TestProject1
 {
@@ -40,12 +36,7 @@ namespace TestProject1
             var window = _driver.WindowHandles.Count;
             Assert.AreEqual(3, window);
             
-            WebDriverWait webDriverWait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
-            webDriverWait.Until(d => d.FindElement(By.CssSelector("div > [class = 'ZfcPIb']")));
-            //Assert.NotNull(_driver.FindElement(By.CssSelector("div > [class = 'ZfcPIb']")).Displayed);
-            Thread.Sleep(5000);
-
-            var someButton = _driver.FindElement(By.ClassName("LkLjZd ScJHi U8Ww7d xjAeve nMZKrb  id-track-click "));
+            var someButton = _driver.FindElement(By.XPath("//*[@class = 'W9yFB']//*[@class = 'LkLjZd ScJHi U8Ww7d xjAeve nMZKrb  id-track-click']"));
             someButton.Click();
             Thread.Sleep(3000);
 

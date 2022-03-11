@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 
 namespace TestProject1
 {
@@ -29,21 +32,28 @@ namespace TestProject1
             firstTv.Click();
             secondTv.Click();
 
-            var button = _driver.FindElement(By.CssSelector("[class = \"compare-button__sub compare-button__sub_main\"])"));
+            var button = _driver.FindElement(By.XPath(
+                "//*[@id='before-footer-googletag']//following::*[contains(@class, 'compare-button__sub_main')]"));
             button.Click();
-            Thread.Sleep(3000);
-            var wrapper = _driver.FindElement(By.ClassName("product-table__wrapper"));
-            wrapper.Click();
-            var pushIcon =
-                _driver.FindElement(By.ClassName("product-table-tip__trigger product-table-tip__trigger_visible"));
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            IWebElement wrapper = wait.Until(e =>
+                e.FindElement(
+                    By.XPath("//*[@id='product-table']/tbody[5]/tr[4]")));
+            Actions action = new Actions(_driver);
+            action.MoveToElement(wrapper);
+            action.Click().Build().Perform();
+
+            IWebElement pushIcon = _driver.FindElement(By.XPath("//*[@id='product-table']/tbody[5]/tr[4]/td[1]/div/span"));
             pushIcon.Click();
-            Thread.Sleep(3000);
+
+            var table = wait.Until(e => e.FindElement(
+                    By.XPath("//*[@class= 'product-table-tip__content']")));
             pushIcon.Click();
-            Thread.Sleep(3000);
-            var deleteTv = _driver.FindElement(By.ClassName(
-                "product-icon product-icon_trash product-table-cell-container__control product-table-cell-container__control_right product-table-cell-container__control_top"));
+
+            var deleteTv = _driver.FindElement(By.XPath(
+                "//*[@id='product-table']/tbody[2]/tr/th[3]/div/a"));
             deleteTv.Click();
-            Thread.Sleep(3000);
+            _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(15);
         }
 
         [TearDown]
