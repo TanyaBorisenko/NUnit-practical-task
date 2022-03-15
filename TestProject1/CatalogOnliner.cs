@@ -26,7 +26,23 @@ namespace TestProject1
             var searchButton = _driver.FindElement(By.ClassName("fast-search__input"));
             searchButton.Click();
             searchButton.SendKeys("Тостер");
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            
+            WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+            var iframeWait = wait.Until(d => d.FindElement(By.XPath("//iframe[@class ='modal-iframe']")));
+            _driver.SwitchTo().Frame(iframeWait);
+
+            var element =
+                _driver.FindElement(
+                    By.XPath("//*[@class ='product__title-link'][1]")).Text;
+
+            var clearText = _driver.FindElement(By.CssSelector("[class ='search__input']"));
+            clearText.Click();
+            clearText.Clear();
+            clearText.SendKeys($"{element}");
+            
+            var closeSearch = _driver.FindElement(By.ClassName("search__close"));
+            closeSearch.Click();
+
         }
 
         [TearDown]
